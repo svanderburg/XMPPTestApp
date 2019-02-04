@@ -85,8 +85,9 @@ rec {
   XMPPTestApp_ipa =
     let
       pkgs = import nixpkgs { system = "x86_64-darwin"; };
+      titaniumenv = pkgs.titaniumenv.override { inherit tiVersion; };
     in
-    pkgs.titaniumenv.buildApp {
+    titaniumenv.buildApp {
       name = "XMPPTestApp-ipa";
       src = ./.;
       target = "iphone";
@@ -98,8 +99,9 @@ rec {
   XMPPTestApp_ios_development =
     let
       pkgs = import nixpkgs { system = "x86_64-darwin"; };
+      titaniumenv = pkgs.titaniumenv.override { inherit tiVersion; };
     in
-    pkgs.titaniumenv.buildApp {
+    titaniumenv.buildApp {
       name = "XMPPTestApp-ios-development";
       src = ./.;
       target = "iphone";
@@ -108,6 +110,7 @@ rec {
   simulate_XMPPTestApp =
     let
       pkgs = import nixpkgs { system = "x86_64-darwin"; };
+      titaniumenv = pkgs.titaniumenv.override { inherit tiVersion; };
     in
     pkgs.xcodeenv.simulateApp {
       name = "simulate-XMPPTestApp";
