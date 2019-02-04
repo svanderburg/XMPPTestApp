@@ -9,6 +9,7 @@
 , iosCertificatePassword ? "" # Should match what is in the p12 file
 , enableWirelessDistribution ? false
 , installURL ? "/installipa.php"
+, tiVersion ? "7.5.1.GA"
 }:
 
 let
@@ -18,23 +19,31 @@ rec {
   XMPPTestApp_android_debug = pkgs.lib.genAttrs systems (system:
     let
       pkgs = import nixpkgs { inherit system; };
+      titaniumenv = pkgs.titaniumenv.override { inherit tiVersion; };
     in
-    pkgs.titaniumenv.buildApp {
+    titaniumenv.buildApp {
       name = "XMPPTestApp-android-debug";
       src = ./.;
       target = "android";
-      androidPlatformVersions = [ "25" "26" ];
+      androidsdkArgs = {
+        platformVersions = [ "28" ];
+      };
     });
 
   XMPPTestApp_android_release = pkgs.lib.genAttrs systems (system:
     let
       pkgs = import nixpkgs { inherit system; };
+      titaniumenv = pkgs.titaniumenv.override { inherit tiVersion; };
     in
-    pkgs.titaniumenv.buildApp {
+    titaniumenv.buildApp {
       name = "XMPPTestApp-android-release";
       src = ./.;
       target = "android";
-      androidPlatformVersions = [ "25" "26" ];
+
+      androidsdkArgs = {
+        platformVersions = [ "28" ];
+      };
+
       release = true;
       inherit androidKeyStore androidKeyAlias androidKeyStorePassword;
     });
